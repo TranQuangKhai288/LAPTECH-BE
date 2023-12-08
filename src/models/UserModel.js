@@ -9,6 +9,11 @@ const userSchema = new mongoose.Schema(
     address: { type: String, default: "" },
     avatar: { type: String },
     city: { type: String },
+    cart: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Cart",
+      default: null,
+    },
   },
   {
     timestamps: true,

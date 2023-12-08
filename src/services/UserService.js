@@ -1,4 +1,6 @@
 const User = require("../models/UserModel");
+const Product = require("../models/ProductModel");
+const Cart = require("../models/CartModel");
 const bcrypt = require("bcrypt");
 const { genneralAccessToken, genneralRefreshToken } = require("./JwtService");
 
