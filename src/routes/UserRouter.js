@@ -18,8 +18,14 @@ router.get("/get-cart-user/:id", userController.getUserCart);
 
 router.delete(
   "/delete-cart-user/:id/:idProduct",
-  //authUserMiddleWare,
+  authUserMiddleWare,
   userController.deleteProductUserCart
+);
+
+router.put(
+  "/update-cart-user/:id/:idProduct",
+  authUserMiddleWare,
+  userController.updateUserCart
 );
 router.get("/get-cart-user/:id", userController.getUserCart);
 
@@ -28,7 +34,7 @@ router.delete("/delete-user/:id", authMiddleWare, userController.deleteUser);
 router.get("/getAll", authMiddleWare, userController.getAllUser);
 router.get(
   "/get-details/:id",
-  //authUserMiddleWare,
+  authUserMiddleWare,
   userController.getDetailsUser
 );
 router.post("/refresh-token", userController.refreshToken);
