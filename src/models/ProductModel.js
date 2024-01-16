@@ -8,10 +8,15 @@ const productSchema = new mongoose.Schema(
     company: { type: String },
     price: { type: Number, required: true },
     countInStock: { type: Number, required: true },
-    rating: { type: Number, required: true },
+
     description: { type: String },
     discount: { type: Number },
     selled: { type: Number },
+    comment_and_rating: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "CommentAndRating",
+      default: null,
+    },
   },
   {
     timestamps: true,
