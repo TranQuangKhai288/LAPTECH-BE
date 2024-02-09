@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const User = require("../models/UserModel");
 const Product = require("../models/ProductModel");
 const Cart = require("../models/CartModel");
+const CommentAndRating = require("../models/CommentAndRating");
 const { use } = require("../routes/UserRouter");
 
 const createUser = async (req, res) => {
@@ -416,6 +417,62 @@ const logoutUser = async (req, res) => {
     });
   }
 };
+
+const postCommentAndRating = async (req, res) => {
+  const { userId, productId, comment, rating } = req.body;
+  try {
+    // Check if userId and productId are provided
+    if (!userId || !productId) {
+      throw new Error("userId and productId are required.");
+    }
+
+    // Find the user and product
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new Error(`User with ID ${userId} not found.`);
+    }
+
+    const product = await Product.findById(productId);
+    if (!product) {
+      throw new Error(`Product with ID ${productId} not found.`);
+    }
+
+    // Create a new instance of CommentAndRating
+    const newCommentAndRating = new CommentAndRating({
+      userId,
+      productId,
+      comment,
+      rating,
+    });
+    await newCommentAndRating.save();
+
+    // Update user and product
+    user.comment_and_rating.push(newCommentAndRating._id);
+    await user.save();
+
+    product.comment_and_rating.push(newCommentAndRating._id);
+    await product.save();
+
+    // Calculate average rating
+    const comment_and_rating = await CommentAndRating.find({ productId });
+    let totalRating = 0;
+    comment_and_rating.forEach((item) => {
+      totalRating += item.rating;
+    });
+    const averageRating = totalRating / comment_and_rating.length;
+
+    product.averageRating = averageRating;
+    await product.save();
+
+    res.json({
+      success: true,
+      message: "Comment and rating posted successfully.",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 module.exports = {
   createUser,
   loginUser,
@@ -431,4 +488,5 @@ module.exports = {
   refreshToken,
   logoutUser,
   deleteMany,
+  postCommentAndRating,
 };

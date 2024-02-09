@@ -1,18 +1,10 @@
 const Product = require("../models/ProductModel");
+const CommentAndRating = require("../models/CommentAndRating");
 
 const createProduct = (newProduct) => {
   return new Promise(async (resolve, reject) => {
-    const {
-      name,
-      image,
-      type,
-      company,
-      countInStock,
-      price,
-      rating,
-      description,
-      discount,
-    } = newProduct;
+    const { name, image, type, company, countInStock, price, description } =
+      newProduct;
     try {
       const checkProduct = await Product.findOne({
         name: name,
@@ -30,7 +22,6 @@ const createProduct = (newProduct) => {
         company,
         countInStock: Number(countInStock),
         price,
-        rating,
         description,
       });
       if (newProduct) {
@@ -214,6 +205,25 @@ const getAllType = () => {
   });
 };
 
+const getCommentAndRating = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const allCommentAndRating = await CommentAndRating.find({
+        productId: id,
+      })
+        .populate("userId", "name")
+        .sort({ createdAt: -1, updatedAt: -1 });
+      resolve({
+        status: "OK",
+        message: "Success",
+        data: allCommentAndRating,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 module.exports = {
   createProduct,
   updateProduct,
@@ -222,4 +232,5 @@ module.exports = {
   getAllProduct,
   deleteManyProduct,
   getAllType,
+  getCommentAndRating,
 };

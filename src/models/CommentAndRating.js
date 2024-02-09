@@ -1,24 +1,27 @@
-const mongoose = require("mongoose"); // Erase if already required
+const mongoose = require("mongoose");
 
-// Declare the Schema of the Mongo model
-var commentSchema = new mongoose.Schema(
+const commentAndRatingSchema = new mongoose.Schema(
   {
-    comments: [
-      {
-        rating: Number,
-        comment: String,
-        user: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-        },
-      },
-    ],
-    averageRating: Number,
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    productId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
+    },
+    comment: { type: String },
+    rating: { type: Number, min: 1, max: 5 },
   },
   {
     timestamps: true,
   }
 );
 
-//Export the model
-module.exports = mongoose.model("CommentAndRating", commentSchema);
+const CommentAndRating = mongoose.model(
+  "CommentAndRating",
+  commentAndRatingSchema
+);
+module.exports = CommentAndRating;

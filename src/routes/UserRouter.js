@@ -46,5 +46,9 @@ router.get(
 );
 router.post("/refresh-token", userController.refreshToken);
 router.post("/delete-many", authMiddleWare, userController.deleteMany);
+router.post(
+  "/post-comment-and-rating/:id",
+  userController.postCommentAndRating
+);
 
 module.exports = router;

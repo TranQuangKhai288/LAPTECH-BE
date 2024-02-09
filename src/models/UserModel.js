@@ -14,6 +14,13 @@ const userSchema = new mongoose.Schema(
       ref: "Cart",
       default: null,
     },
+    comment_and_rating: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "CommentAndRating",
+        default: null,
+      },
+    ],
   },
   {
     timestamps: true,
