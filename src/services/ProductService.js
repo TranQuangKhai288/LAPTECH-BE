@@ -211,7 +211,7 @@ const getCommentAndRating = (id) => {
       const allCommentAndRating = await CommentAndRating.find({
         productId: id,
       })
-        .populate("userId", "name")
+        .populate("userId", "name avatar")
         .sort({ createdAt: -1, updatedAt: -1 });
       resolve({
         status: "OK",
