@@ -34,8 +34,6 @@ router.delete(
   userController.deleteAllProductInCart
 );
 
-router.get("/get-cart-user/:id", userController.getUserCart);
-
 router.put("/update-user/:id", authUserMiddleWare, userController.updateUser);
 router.delete("/delete-user/:id", authMiddleWare, userController.deleteUser);
 router.get("/getAll", authMiddleWare, userController.getAllUser);
